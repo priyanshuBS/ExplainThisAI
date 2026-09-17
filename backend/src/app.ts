@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 
+import documentRoutes from "./routes/document.routes"
+
 const app = express();
 
 const corsOptions = {
@@ -16,6 +18,8 @@ app.get("/api/health", (req, res) => {
         success: true,
         message: "ExplainThisAI backend is running..."
     })
-})
+});
+
+app.use("/api/document", documentRoutes);
 
 export default app;
