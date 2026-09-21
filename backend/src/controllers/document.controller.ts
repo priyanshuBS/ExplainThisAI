@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { processDocument } from "../services/document.service";
+import { processDocument } from "../services/document.service.js";
 
 export const uploadDocument = async (
     req: Request,
