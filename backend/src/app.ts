@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.routes.js";
 import documentsRoutes from "./routes/document.routes.js";
 import searchRoutes from "./routes/search.routes.js";
+import conversationRoutes from "./routes/conversation.routes.js"
 
 const app = express();
 
@@ -27,5 +28,6 @@ app.get("/api/health", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/documents", documentsRoutes);
 app.use("/api/search", searchRoutes);
+app.use("/api/conversations", conversationRoutes);
 
 export default app;

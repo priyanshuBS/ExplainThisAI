@@ -23,12 +23,26 @@ export const UploadDocument = async (req: Request, res: Response) => {
             success: true,
             message: "Document uploaded successfully!",
             data: {
-                document: result.document,
-                chunks: result.chunks
+                document: {
+                    id: result.document.id,
+                    fileName: result.document.filename,
+                    pageCount: result.document.pageCount,
+                    fileSize: result.document.fileSize,
+                    status: result.document.status,
+                    createdAt: result.document.createdAt
+                }
             }
         })
     } catch (error) {
         console.log("Document controller error!", error);
+
+        if (error instanceof Error && error.name === "JINA_RATE_LIMIT") {
+            return res.status(429).json({
+                success: false,
+                code: "JINA_RATE_LIMIT",
+                message: "Embedding service limit reach. Please try again later"
+            })
+        }
 
         return res.status(500).json({
             success: false,
