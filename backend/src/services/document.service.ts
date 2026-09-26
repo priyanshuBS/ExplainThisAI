@@ -1,5 +1,7 @@
 import { prisma } from "../config/prisma.js";
 import { parsePdf } from "./pdf.service.js";
+import { cleanText } from "./text.service.js";
+import { createChunk } from "./chunk.service.js";
 
 export const processDocument = async (userId: string, file: Express.Multer.File) => {
     const document = await prisma.document.create({
@@ -14,6 +16,10 @@ export const processDocument = async (userId: string, file: Express.Multer.File)
     try {
         const parsedPdf = await parsePdf(file.buffer);
 
+        const cleanedText = cleanText(parsedPdf.text);
+
+        const chunks = createChunk(cleanedText);
+
         const updatedDocument = await prisma.document.update({
             where: {
                 id: document.id,
@@ -26,7 +32,7 @@ export const processDocument = async (userId: string, file: Express.Multer.File)
 
         return {
             document: updatedDocument,
-            text: parsedPdf.text
+            chunks
         }
     } catch (error) {
         await prisma.document.update({

@@ -23,7 +23,8 @@ export const UploadDocument = async (req: Request, res: Response) => {
             success: true,
             message: "Document uploaded successfully!",
             data: {
-                document: result.document
+                document: result.document,
+                chunks: result.chunks
             }
         })
     } catch (error) {
