@@ -1,11 +1,43 @@
-import { PDFParse } from "pdf-parse";
+import { prisma } from "../config/prisma.js";
+import { parsePdf } from "./pdf.service.js";
 
-export const processDocument = async (file: Express.Multer.File) => {
-    const parser = new PDFParse({ data: file.buffer });
+export const processDocument = async (userId: string, file: Express.Multer.File) => {
+    const document = await prisma.document.create({
+        data: {
+            userId,
+            filename: file.originalname,
+            fileSize: file.size,
+            status: "PROCESSING"
+        }
+    });
 
-    const result = await parser.getText();
+    try {
+        const parsedPdf = await parsePdf(file.buffer);
 
-    await parser.destroy();
+        const updatedDocument = await prisma.document.update({
+            where: {
+                id: document.id,
+            },
+            data: {
+                pageCount: parsedPdf.pageCount,
+                status: "READY"
+            }
+        });
 
-    return result.text;
+        return {
+            document: updatedDocument,
+            text: parsedPdf.text
+        }
+    } catch (error) {
+        await prisma.document.update({
+            where: {
+                id: document.id,
+            },
+            data: {
+                status: "FAILED",
+            }
+        });
+        
+        throw error;
+    }
 }

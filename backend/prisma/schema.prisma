@@ -36,6 +36,7 @@ model Document {
   userId    String
   filename  String
   pageCount Int?
+  fileSize  Int
   status    DocumentStatus @default(PROCESSING)
   createdAt DateTime       @default(now())
   updatedAt DateTime       @updatedAt

@@ -1,11 +1,15 @@
 import { Request, Response } from "express";
 import { processDocument } from "../services/document.service.js";
 
-export const uploadDocument = async (
-    req: Request,
-    res: Response
-) => {
+export const UploadDocument = async (req: Request, res: Response) => {
     try {
+        if (!req.userId) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized"
+            });
+        }
+
         if (!req.file) {
             return res.status(400).json({
                 success: false,
@@ -13,18 +17,21 @@ export const uploadDocument = async (
             })
         }
 
-        const result = await processDocument(req.file);
+        const result = await processDocument(req.userId, req.file);
 
         return res.status(200).json({
             success: true,
-            message: "Document processed successfully",
-            data: result
+            message: "Document uploaded successfully!",
+            data: {
+                document: result.document
+            }
         })
     } catch (error) {
-        console.log("error in document controller");
+        console.log("Document controller error!", error);
+
         return res.status(500).json({
             success: false,
-            message: "Failed to process documents."
+            message: "Internal server error!"
         })
     }
 }
