@@ -16,7 +16,7 @@ export const createMessage = async (
     throw new Error("Message content is required");
   }
 
-  // 1. Find conversation belonging to current user
+  // Find conversation belonging to current user
   const conversation = await prisma.conversation.findFirst({
     where: {
       id: conversationId,
@@ -35,7 +35,7 @@ export const createMessage = async (
     throw new Error("Conversation not found");
   }
 
-  // 2. Get documents attached to this conversation
+  // Get documents attached to this conversation
   const documentIds = conversation.documents.map(
     (item) => item.documentId
   );
@@ -46,7 +46,7 @@ export const createMessage = async (
     );
   }
 
-  // 3. Get previous conversation history
+  // Get previous conversation history
   const history = await prisma.message.findMany({
     where: {
       conversationId,
@@ -63,7 +63,7 @@ export const createMessage = async (
 
   const orderedHistory = history.reverse();
 
-  // 4. Save user's message
+  // Save user's message
   const userMessage = await prisma.message.create({
     data: {
       conversationId,
@@ -73,7 +73,7 @@ export const createMessage = async (
   });
 
   try {
-    // 5. Search only inside this conversation's documents
+    // Search only inside this conversation's documents
     const searchResults = await searchDocuments(
       userId,
       documentIds,
@@ -81,7 +81,7 @@ export const createMessage = async (
       SEARCH_TOP_K
     );
 
-    // 6. Generate answer using retrieved context + history
+    // Generate answer using retrieved context + history
     const answer = await generateAnswer(
       question,
       orderedHistory.map((message) => ({
@@ -97,7 +97,7 @@ export const createMessage = async (
       }))
     );
 
-    // 7. Save assistant message
+    // Save assistant message
     const assistantMessage = await prisma.message.create({
       data: {
         conversationId,
@@ -106,7 +106,7 @@ export const createMessage = async (
       },
     });
 
-    // 8. Update conversation timestamp
+    // Update conversation timestamp
     await prisma.conversation.update({
       where: {
         id: conversationId,

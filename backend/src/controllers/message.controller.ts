@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { createMessage } from "../services/message.service.js";
 
-export const createMessageController = async (
+export const CreateMessage = async (
   req: Request,
   res: Response
 ) => {

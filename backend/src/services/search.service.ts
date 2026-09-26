@@ -19,14 +19,14 @@ export const searchDocuments = async (
     return [];
   }
 
-  // 1. Convert user's question into a vector
+  // Convert user's question into a vector
   const queryEmbedding = await generateQueryEmbedding(query);
 
 
-  // 2. Search only inside this user's namespace
+  // Search only inside this user's namespace
   const namespace = pineconeIndex.namespace(userId);
 
-  // 3. Search only the documents attached to the conversation
+  // Search only the documents attached to the conversation
   const result = await namespace.query({
     vector: queryEmbedding,
     topK,
@@ -38,7 +38,7 @@ export const searchDocuments = async (
     },
   });
 
-  // 4. Convert Pinecone response into our own format
+  // Convert Pinecone response into our own format
   return result.matches
     .filter((match) => match.metadata?.text)
     .map((match) => ({

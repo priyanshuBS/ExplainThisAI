@@ -44,8 +44,7 @@ export const processDocument = async (userId: string, file: Express.Multer.File)
         });
 
         return {
-            document: updatedDocument,
-            chunks
+            document: updatedDocument
         }
     } catch (error) {
         await prisma.document.update({
