@@ -5,7 +5,8 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.routes.js";
 import documentsRoutes from "./routes/document.routes.js";
 import searchRoutes from "./routes/search.routes.js";
-import conversationRoutes from "./routes/conversation.routes.js"
+import conversationRoutes from "./routes/conversation.routes.js";
+import messageRoutes from "./routes/message.routes.js";
 
 const app = express();
 
@@ -29,5 +30,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/documents", documentsRoutes);
 app.use("/api/search", searchRoutes);
 app.use("/api/conversations", conversationRoutes);
+app.use("/api/conversations", messageRoutes);
 
 export default app;
