@@ -86,3 +86,21 @@ export const loginUserService = async (
         token
     }
 }
+
+export const currentUserService = async (userId: string) => {
+    const user = await prisma.user.findFirst({
+        where: {
+            id: userId
+        }
+    });
+
+    if (!user) {
+        throw new Error("User does not exists")
+    }
+
+    return {
+        id: user.id,
+        email: user.email,
+        name: user.name
+    }
+}

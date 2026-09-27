@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { registerUserService, loginUserService } from "../services/auth.service.js";
+import { registerUserService, loginUserService, currentUserService } from "../services/auth.service.js";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -87,6 +87,34 @@ export const LogoutUser = async (req: Request, res: Response) => {
         })
     } catch (error) {
         console.log("Error in logout controller");
+
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error!"
+        })
+    }
+}
+
+export const CurrentUser = async (req: Request, res: Response) => {
+    try {
+        const userId = req.userId;
+
+        if (!userId) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized"
+            })
+        }
+
+        const data = await currentUserService(userId);
+
+        return res.status(200).json({
+            success: true,
+            message: "Fectch current user data!",
+            data
+        });
+    } catch (error) {
+        console.log("Error fetching current user data", error);
 
         return res.status(500).json({
             success: false,
