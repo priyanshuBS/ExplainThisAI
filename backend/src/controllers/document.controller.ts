@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { processDocument } from "../services/document.service.js";
 
-export const UploadDocument = async (req: Request, res: Response) => {
+export const UploadDocuments = async (req: Request, res: Response) => {
     try {
         if (!req.userId) {
             return res.status(401).json({
@@ -10,27 +10,35 @@ export const UploadDocument = async (req: Request, res: Response) => {
             });
         }
 
-        if (!req.file) {
+        const files = req.files as Express.Multer.File[];
+
+        if (!files || files.length === 0) {
             return res.status(400).json({
                 success: false,
-                message: "PDF file is required"
+                message: "At least one pdf is required"
             })
         }
 
-        const result = await processDocument(req.userId, req.file);
+        const documents = [];
+
+        for (const file of files) {
+            const result = await processDocument(req.userId, file);
+
+            documents.push({
+                id: result.document.id,
+                fileName: result.document.filename,
+                pageCount: result.document.pageCount,
+                fileSize: result.document.fileSize,
+                status: result.document.status,
+                createdAt: result.document.createdAt
+            })
+        }
 
         return res.status(200).json({
             success: true,
-            message: "Document uploaded successfully!",
+            message: "Documents uploaded successfully!",
             data: {
-                document: {
-                    id: result.document.id,
-                    fileName: result.document.filename,
-                    pageCount: result.document.pageCount,
-                    fileSize: result.document.fileSize,
-                    status: result.document.status,
-                    createdAt: result.document.createdAt
-                }
+                documents
             }
         })
     } catch (error) {
