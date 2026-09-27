@@ -43,7 +43,7 @@ const Login = () => {
 
             toast.success("Welcome back!");
 
-            navigate("/");
+            navigate("/dashboard");
         } catch (error) {
             toast.error("Invalid email or password.");
         } finally {

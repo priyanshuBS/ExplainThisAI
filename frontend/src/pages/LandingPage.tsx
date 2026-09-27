@@ -9,7 +9,7 @@ import {
     Zap,
 } from "lucide-react";
 
-export const LandingPage = () => {
+const LandingPage = () => {
     return (
         <main className="min-h-screen overflow-hidden bg-[#fafafa] text-gray-950">
 
@@ -603,3 +603,5 @@ const FeatureCard = ({
         </div>
     );
 };
+
+export default LandingPage;
