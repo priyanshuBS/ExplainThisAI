@@ -4,7 +4,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import LandingPage from "./pages/LandingPage";
 import Dashboard from "./pages/Dashboard";
-import ProtectedRoute from "./components/ProtectedRoute"
+import ProtectedRoute from "./components/ProtectedRoute";
+import Chat from "./pages/Chat";
 
 const router = createBrowserRouter([
     {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
                 path: "/dashboard",
                 element: <Dashboard />,
             },
+            {
+                path: "/chat/:conversationId",
+                element: <Chat />
+            }
         ],
     },
 ]);

@@ -1,4 +1,6 @@
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import {
     FileText,
     Upload,
@@ -7,11 +9,15 @@ import {
     Sparkles,
     Loader2,
 } from "lucide-react";
+
 import { toast } from "react-hot-toast";
 
 import { uploadDocuments } from "../api/documents.api";
+import { createConversation } from "../api/conversation.api";
 
 const Dashboard = () => {
+    const navigate = useNavigate();
+
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const [files, setFiles] = useState<File[]>([]);
@@ -20,7 +26,9 @@ const Dashboard = () => {
     const handleFileSelect = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
-        const selectedFiles = Array.from(event.target.files || []);
+        const selectedFiles = Array.from(
+            event.target.files || []
+        );
 
         if (selectedFiles.length === 0) {
             return;
@@ -51,7 +59,9 @@ const Dashboard = () => {
 
     const removeFile = (fileName: string) => {
         setFiles((previousFiles) =>
-            previousFiles.filter((file) => file.name !== fileName)
+            previousFiles.filter(
+                (file) => file.name !== fileName
+            )
         );
     };
 
@@ -64,26 +74,41 @@ const Dashboard = () => {
         setUploading(true);
 
         try {
+            // 1. Upload documents
             const response = await uploadDocuments(files);
 
-            if (response.success) {
-                toast.success(
-                    `${response.data.documents.length} document${
-                        response.data.documents.length > 1 ? "s" : ""
-                    } uploaded successfully!`
-                );
-
-                console.log(
-                    "Uploaded documents:",
-                    response.data.documents
-                );
-
-                setFiles([]);
+            if (!response.success) {
+                throw new Error(response.message);
             }
+
+            // 2. Get uploaded document IDs
+            const documentIds =
+                response.data.documents.map(
+                    (document) => document.id
+                );
+
+            // 3. Create conversation with uploaded documents
+            const conversationResponse =
+                await createConversation(documentIds);
+
+            if (!conversationResponse.success) {
+                throw new Error(
+                    conversationResponse.message
+                );
+            }
+
+            // 4. Get conversation ID
+            const conversationId =
+                conversationResponse.data.conversation.id;
+
+            // 5. Navigate to chat
+            navigate(`/chat/${conversationId}`);
+
         } catch (error: any) {
             toast.error(
                 error.response?.data?.message ||
-                    "Failed to upload documents."
+                    error.message ||
+                    "Something went wrong."
             );
         } finally {
             setUploading(false);
@@ -153,7 +178,9 @@ const Dashboard = () => {
 
                 {/* Upload area */}
                 <div
-                    onClick={() => fileInputRef.current?.click()}
+                    onClick={() =>
+                        fileInputRef.current?.click()
+                    }
                     className="group mx-auto mt-10 max-w-3xl cursor-pointer rounded-3xl border border-dashed border-white/15 bg-white/[0.025] p-8 transition hover:border-violet-400/40 hover:bg-violet-500/[0.03] sm:p-12"
                 >
                     <input
