@@ -8,6 +8,13 @@ export interface ConversationDocument {
     status: "PROCESSING" | "READY" | "FAILED";
 }
 
+export interface ConversationMessage {
+    id: string;
+    role: "USER" | "ASSISTANT";
+    content: string;
+    createdAt: string;
+}
+
 export interface Conversation {
     id: string;
     title: string | null;
@@ -17,6 +24,8 @@ export interface Conversation {
     documents: Array<{
         document: ConversationDocument;
     }>;
+
+    messages?: ConversationMessage[];
 }
 
 interface CreateConversationResponse {
@@ -27,18 +36,37 @@ interface CreateConversationResponse {
     };
 }
 
+interface GetConversationResponse {
+    success: boolean;
+    message?: string;
+    data: {
+        conversation: Conversation & {
+            messages: ConversationMessage[];
+        };
+    };
+}
+
 export const createConversation = async (
     documentIds: string[],
     title?: string
 ): Promise<CreateConversationResponse> => {
-    const response =
-        await api.post<CreateConversationResponse>(
-            "/conversations",
-            {
-                documentIds,
-                title,
-            }
-        );
+    const response = await api.post<CreateConversationResponse>(
+        "/conversations",
+        {
+            documentIds,
+            title,
+        }
+    );
+
+    return response.data;
+};
+
+export const getConversation = async (
+    conversationId: string
+): Promise<GetConversationResponse> => {
+    const response = await api.get<GetConversationResponse>(
+        `/conversations/${conversationId}`
+    );
 
     return response.data;
 };
