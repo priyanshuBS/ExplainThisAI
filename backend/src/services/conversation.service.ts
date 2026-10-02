@@ -58,3 +58,50 @@ export const createConversation = async (
 
     return conversation;
 }
+
+export const getConversation = async (
+    userId: string,
+    conversationId: string
+) => {
+    const conversation = await prisma.conversation.findFirst({
+        where: {
+            id: conversationId,
+            userId,
+        },
+
+        include: {
+            documents: {
+                include: {
+                    document: {
+                        select: {
+                            id: true,
+                            filename: true,
+                            pageCount: true,
+                            fileSize: true,
+                            status: true,
+                        },
+                    },
+                },
+            },
+
+            messages: {
+                orderBy: {
+                    createdAt: "asc",
+                },
+
+                select: {
+                    id: true,
+                    role: true,
+                    content: true,
+                    createdAt: true,
+                },
+            },
+        },
+    });
+
+    if (!conversation) {
+        throw new Error("Conversation not found");
+    }
+
+    return conversation;
+};
