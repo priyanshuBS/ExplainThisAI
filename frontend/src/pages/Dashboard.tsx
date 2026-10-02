@@ -5,6 +5,7 @@ import {
     ArrowRight,
     FileText,
     Loader2,
+    Sparkles,
     Upload,
     X,
 } from "lucide-react";
@@ -205,15 +206,20 @@ const Dashboard = () => {
                         to="/login"
                         className="group flex cursor-pointer items-center gap-2.5"
                     >
-                        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-indigo-500 shadow-lg shadow-violet-500/10 transition duration-200 group-hover:shadow-violet-500/20">
-                            <span className="text-sm font-semibold text-white">
-                                E
-                            </span>
+
+                        {/* ExplainThisAI logo */}
+
+                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-indigo-500 shadow-lg shadow-violet-500/20 transition duration-300 group-hover:shadow-violet-500/30">
+
+                            <Sparkles className="h-3.5 w-3.5 text-white" />
+
                         </div>
 
-                        <span className="text-[16px] font-semibold tracking-[-0.02em]">
+
+                        <span className="text-[15px] font-semibold tracking-[-0.02em] text-white">
                             ExplainThisAI
                         </span>
+
                     </Link>
 
                 </div>
@@ -302,8 +308,6 @@ const Dashboard = () => {
                                 `}
                             >
 
-                                {/* Small visual mark */}
-
                                 <div
                                     className={`
                                         flex h-14 w-14 items-center
@@ -355,8 +359,6 @@ const Dashboard = () => {
                                     className="border-t border-white/[0.07] bg-[#0a0a0d] px-4 py-4 sm:px-5"
                                 >
 
-                                    {/* Header */}
-
                                     <div className="mb-3 flex items-center justify-between">
 
                                         <div className="flex items-baseline gap-2">
@@ -384,8 +386,6 @@ const Dashboard = () => {
 
                                     </div>
 
-
-                                    {/* File list */}
 
                                     <div
                                         className={`
@@ -510,7 +510,6 @@ const Dashboard = () => {
 
 
 const formatFileSize = (bytes: number) => {
-
     if (bytes < 1024) {
         return `${bytes} B`;
     }

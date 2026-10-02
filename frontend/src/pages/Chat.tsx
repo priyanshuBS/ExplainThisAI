@@ -5,6 +5,7 @@ import {
     FileText,
     Loader2,
     Paperclip,
+    Sparkles,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 
@@ -64,6 +65,7 @@ const Chat = () => {
                     response.data.conversation;
 
                 setConversation(currentConversation);
+
                 setMessages(
                     currentConversation.messages || []
                 );
@@ -223,22 +225,23 @@ const Chat = () => {
     if (loadingMessages) {
         return (
             <main className="min-h-screen bg-[#07070a] text-white">
+
                 <header className="border-b border-white/[0.07] bg-[#07070a]/90 backdrop-blur-xl">
                     <div className="mx-auto flex h-[68px] max-w-6xl items-center px-5 sm:px-8">
+
                         <Link
                             to="/"
                             className="group flex cursor-pointer items-center gap-2.5"
                         >
-                            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-indigo-500 shadow-lg shadow-violet-500/15">
-                                <span className="text-sm font-semibold">
-                                    E
-                                </span>
+                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-indigo-500 shadow-lg shadow-violet-500/20 transition duration-300 group-hover:shadow-violet-500/30">
+                                <Sparkles className="h-3.5 w-3.5 text-white" />
                             </div>
 
-                            <span className="text-[16px] font-semibold tracking-[-0.02em]">
+                            <span className="text-[15px] font-semibold tracking-[-0.02em] text-white">
                                 ExplainThisAI
                             </span>
                         </Link>
+
                     </div>
                 </header>
 
@@ -248,6 +251,7 @@ const Chat = () => {
                         Loading conversation
                     </div>
                 </div>
+
             </main>
         );
     }
@@ -257,35 +261,53 @@ const Chat = () => {
 
     return (
         <main className="relative flex min-h-screen flex-col overflow-hidden bg-[#07070a] text-white">
-            {/* Background */}
+
+            {/* =====================================================
+                BACKGROUND
+            ===================================================== */}
+
             <div className="pointer-events-none fixed inset-0">
+
                 <div className="absolute -left-[280px] -top-[280px] h-[600px] w-[600px] rounded-full bg-violet-600/[0.07] blur-[170px]" />
 
                 <div className="absolute -bottom-[300px] -right-[240px] h-[600px] w-[600px] rounded-full bg-indigo-600/[0.06] blur-[170px]" />
+
             </div>
 
-            {/* Header */}
+
+            {/* =====================================================
+                HEADER
+            ===================================================== */}
+
             <header className="relative z-20 shrink-0 border-b border-white/[0.07] bg-[#07070a]/85 backdrop-blur-xl">
+
                 <div className="mx-auto flex h-[68px] w-full max-w-6xl items-center justify-between px-5 sm:px-8">
+
                     <Link
                         to="/login"
                         className="group flex cursor-pointer items-center gap-2.5"
                     >
-                        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-indigo-500 shadow-lg shadow-violet-500/15 transition-shadow duration-200 group-hover:shadow-violet-500/25">
-                            <span className="text-sm font-semibold">
-                                E
-                            </span>
+
+                        {/* ExplainThisAI logo */}
+
+                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-indigo-500 shadow-lg shadow-violet-500/20 transition duration-300 group-hover:shadow-violet-500/30">
+                            <Sparkles className="h-3.5 w-3.5 text-white" />
                         </div>
 
-                        <span className="text-[16px] font-semibold tracking-[-0.02em]">
+                        <span className="text-[15px] font-semibold tracking-[-0.02em] text-white">
                             ExplainThisAI
                         </span>
+
                     </Link>
 
+
                     {/* Conversation context */}
+
                     {documents.length > 0 && (
                         <div className="hidden items-center gap-2 sm:flex">
+
                             <div className="flex -space-x-1.5">
+
                                 {documents
                                     .slice(0, 3)
                                     .map(
@@ -305,6 +327,7 @@ const Chat = () => {
                                             </div>
                                         )
                                     )}
+
                             </div>
 
                             <span className="max-w-[220px] truncate text-xs text-gray-500">
@@ -315,16 +338,29 @@ const Chat = () => {
                                           .filename
                                     : `${documents.length} documents`}
                             </span>
+
                         </div>
                     )}
+
                 </div>
+
             </header>
 
-            {/* Main */}
+
+            {/* =====================================================
+                MAIN
+            ===================================================== */}
+
             <section className="relative z-10 flex min-h-0 flex-1">
+
                 <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col px-4 sm:px-6">
-                    {/* Messages */}
+
+                    {/* =================================================
+                        MESSAGES
+                    ================================================= */}
+
                     <div className="flex-1 overflow-y-auto py-8 sm:py-10">
+
                         {messages.length === 0 ? (
                             <EmptyState
                                 documents={documents}
@@ -334,6 +370,7 @@ const Chat = () => {
                             />
                         ) : (
                             <div className="space-y-8">
+
                                 {messages.map(
                                     (message) => (
                                         <Message
@@ -356,15 +393,23 @@ const Chat = () => {
                                         messagesEndRef
                                     }
                                 />
+
                             </div>
                         )}
+
                     </div>
 
-                    {/* Composer */}
+
+                    {/* =================================================
+                        COMPOSER
+                    ================================================= */}
+
                     <div className="relative shrink-0 pb-4 pt-3 sm:pb-6">
+
                         <div className="pointer-events-none absolute inset-x-0 -top-16 h-20 bg-gradient-to-t from-[#07070a] to-transparent" />
 
                         <div className="relative overflow-hidden rounded-2xl border border-white/[0.10] bg-[#101014]/95 shadow-[0_18px_70px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-colors focus-within:border-white/[0.16]">
+
                             <textarea
                                 ref={textareaRef}
                                 value={input}
@@ -386,7 +431,9 @@ const Chat = () => {
                             />
 
                             <div className="flex items-center justify-between px-3 pb-3 sm:px-4">
+
                                 <div className="flex items-center gap-2 text-[11px] text-gray-600">
+
                                     <Paperclip className="h-3.5 w-3.5" />
 
                                     <span className="hidden sm:inline">
@@ -395,7 +442,9 @@ const Chat = () => {
                                             ? "1 document"
                                             : `${documents.length} documents`}
                                     </span>
+
                                 </div>
+
 
                                 <button
                                     type="button"
@@ -409,28 +458,38 @@ const Chat = () => {
                                     className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl bg-white text-gray-950 transition-all duration-200 hover:bg-gray-200 active:scale-95 disabled:cursor-not-allowed disabled:opacity-30"
                                     aria-label="Send message"
                                 >
+
                                     {sending ? (
                                         <Loader2 className="h-4 w-4 animate-spin" />
                                     ) : (
                                         <ArrowUp className="h-4 w-4" />
                                     )}
+
                                 </button>
+
                             </div>
+
                         </div>
 
                         <p className="mt-2 text-center text-[10px] text-gray-700">
                             Enter to send · Shift + Enter for a new line
                         </p>
+
                     </div>
+
                 </div>
+
             </section>
+
         </main>
     );
 };
 
-/*
- * Empty conversation
- */
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
 interface EmptyStateProps {
     documents: Array<{
         document: {
@@ -451,6 +510,7 @@ const EmptyState = ({
     documents,
     onQuestion,
 }: EmptyStateProps) => {
+
     const questions = [
         "Summarize these documents",
         "What are the main points?",
@@ -459,8 +519,11 @@ const EmptyState = ({
 
     return (
         <div className="flex min-h-[calc(100vh-250px)] items-center justify-center">
+
             <div className="w-full max-w-2xl">
+
                 <div className="text-center">
+
                     <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.035] text-violet-300">
                         <FileText className="h-5 w-5" />
                     </div>
@@ -474,10 +537,13 @@ const EmptyState = ({
                         ask for an explanation from the documents
                         in this conversation.
                     </p>
+
                 </div>
+
 
                 {documents.length > 0 && (
                     <div className="mt-9 overflow-hidden rounded-xl border border-white/[0.08] bg-white/[0.02]">
+
                         <div className="border-b border-white/[0.07] px-4 py-3">
                             <span className="text-xs font-medium text-gray-400">
                                 Documents
@@ -485,6 +551,7 @@ const EmptyState = ({
                         </div>
 
                         <div className="divide-y divide-white/[0.06]">
+
                             {documents.map(
                                 ({ document }) => (
                                     <div
@@ -493,6 +560,7 @@ const EmptyState = ({
                                         }
                                         className="flex items-center gap-3 px-4 py-3"
                                     >
+
                                         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-violet-500/[0.08] text-violet-400">
                                             <FileText className="h-4 w-4" />
                                         </div>
@@ -502,14 +570,19 @@ const EmptyState = ({
                                                 document.filename
                                             }
                                         </span>
+
                                     </div>
                                 )
                             )}
+
                         </div>
+
                     </div>
                 )}
 
+
                 <div className="mt-4 grid gap-2 sm:grid-cols-3">
+
                     {questions.map((question) => (
                         <button
                             key={question}
@@ -524,15 +597,20 @@ const EmptyState = ({
                             {question}
                         </button>
                     ))}
+
                 </div>
+
             </div>
+
         </div>
     );
 };
 
-/*
- * Message
- */
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
 interface MessageProps {
     message: ChatMessage;
 }
@@ -540,6 +618,7 @@ interface MessageProps {
 const Message = ({
     message,
 }: MessageProps) => {
+
     const isUser = message.role === "USER";
 
     return (
@@ -550,6 +629,7 @@ const Message = ({
                     : "justify-start"
             }`}
         >
+
             <div
                 className={`max-w-[92%] sm:max-w-[78%] ${
                     isUser
@@ -557,18 +637,25 @@ const Message = ({
                         : "w-full max-w-3xl"
                 }`}
             >
+
                 {isUser ? (
+
                     <p className="whitespace-pre-wrap text-[14px] leading-6">
                         {message.content}
                     </p>
+
                 ) : (
+
                     <div>
+
                         <div className="mb-2 flex items-center gap-2">
+
                             <div className="h-1.5 w-1.5 rounded-full bg-violet-400" />
 
                             <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-gray-600">
                                 ExplainThisAI
                             </span>
+
                         </div>
 
                         <p className="whitespace-pre-wrap text-[14px] leading-7 text-gray-300 sm:text-[15px]">
@@ -576,33 +663,51 @@ const Message = ({
                                 message.content
                             )}
                         </p>
+
                     </div>
+
                 )}
+
             </div>
+
         </div>
     );
 };
 
-/*
- * Thinking state
- */
+
+/* =========================================================
+   THINKING STATE
+========================================================= */
+
 const ThinkingMessage = () => {
+
     return (
         <div className="flex justify-start">
+
             <div className="w-full max-w-3xl">
+
                 <div className="mb-2 flex items-center gap-2">
+
                     <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-violet-400" />
 
                     <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-gray-600">
                         ExplainThisAI
                     </span>
+
                 </div>
 
                 <div className="flex items-center gap-2 text-sm text-gray-600">
+
                     <Loader2 className="h-3.5 w-3.5 animate-spin text-violet-400" />
-                    <span>Working through the documents...</span>
+
+                    <span>
+                        Working through the documents...
+                    </span>
+
                 </div>
+
             </div>
+
         </div>
     );
 };
