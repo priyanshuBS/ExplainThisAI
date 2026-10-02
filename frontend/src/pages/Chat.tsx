@@ -16,6 +16,8 @@ import {
 
 import { getConversation } from "../api/conversation.api";
 
+import { cleanAIResponse } from "../utils/text.util";
+
 const Chat = () => {
     const { conversationId } = useParams<{
         conversationId: string;
@@ -30,8 +32,8 @@ const Chat = () => {
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     /*
-     * Load existing conversation when the page opens
-     * or when conversationId changes.
+     * Load existing conversation
+     * whenever the conversation ID changes.
      */
     useEffect(() => {
         const loadConversation = async () => {
@@ -71,7 +73,7 @@ const Chat = () => {
     }, [conversationId]);
 
     /*
-     * Automatically scroll to the latest message.
+     * Scroll to the latest message.
      */
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({
@@ -80,7 +82,7 @@ const Chat = () => {
     }, [messages, sending]);
 
     /*
-     * Send message to backend.
+     * Send a new message.
      */
     const handleSend = async () => {
         const content = input.trim();
@@ -99,7 +101,8 @@ const Chat = () => {
         }
 
         /*
-         * Show user message immediately.
+         * Add the user's message immediately
+         * so the UI feels responsive.
          */
         const temporaryUserMessage: ChatMessage = {
             id: crypto.randomUUID(),
@@ -129,7 +132,7 @@ const Chat = () => {
             }
 
             /*
-             * Add assistant response.
+             * Add the assistant's response.
              */
             setMessages((previous) => [
                 ...previous,
@@ -149,7 +152,7 @@ const Chat = () => {
 
             /*
              * Remove the temporary user message
-             * if the request fails.
+             * because the request failed.
              */
             setMessages((previous) =>
                 previous.filter(
@@ -180,7 +183,8 @@ const Chat = () => {
     };
 
     /*
-     * Loading state while fetching conversation.
+     * Loading screen while conversation
+     * history is being fetched.
      */
     if (loadingMessages) {
         return (
@@ -236,11 +240,13 @@ const Chat = () => {
                 </div>
             </header>
 
-            {/* Chat area */}
+            {/* Chat */}
             <section className="flex flex-1 flex-col">
                 <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col px-5 sm:px-8">
+
                     {/* Messages */}
-                    <div className="flex-1 space-y-6 overflow-y-auto py-8">
+                    <div className="flex-1 space-y-6 overflow-y-auto py-8 pb-32">
+                        {/* Empty conversation */}
                         {messages.length === 0 && (
                             <div className="flex min-h-[60vh] items-center justify-center">
                                 <div className="max-w-lg text-center">
@@ -261,6 +267,7 @@ const Chat = () => {
                             </div>
                         )}
 
+                        {/* Messages */}
                         {messages.map((message) => (
                             <div
                                 key={message.id}
@@ -277,7 +284,7 @@ const Chat = () => {
                                     </div>
                                 )}
 
-                                {/* Message */}
+                                {/* Message bubble */}
                                 <div
                                     className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-6 ${
                                         message.role === "USER"
@@ -286,7 +293,11 @@ const Chat = () => {
                                     }`}
                                 >
                                     <p className="whitespace-pre-wrap">
-                                        {message.content}
+                                        {message.role === "ASSISTANT"
+                                            ? cleanAIResponse(
+                                                  message.content
+                                              )
+                                            : message.content}
                                     </p>
                                 </div>
 
@@ -319,8 +330,8 @@ const Chat = () => {
                     </div>
 
                     {/* Input */}
-                    <div className="sticky bottom-0 pb-5 pt-3">
-                        <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-2 shadow-2xl shadow-black/20">
+                    <div className="sticky bottom-0 z-10 pb-5 pt-3">
+                        <div className="rounded-2xl border border-white/10 bg-[#101014]/95 p-2 shadow-2xl shadow-black/30 backdrop-blur-xl">
                             <textarea
                                 value={input}
                                 onChange={(event) =>
@@ -340,6 +351,7 @@ const Chat = () => {
                                 </span>
 
                                 <button
+                                    type="button"
                                     onClick={handleSend}
                                     disabled={
                                         sending ||
