@@ -1,13 +1,12 @@
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
+    ArrowRight,
     FileText,
+    Loader2,
     Upload,
     X,
-    ArrowRight,
-    Sparkles,
-    Loader2,
 } from "lucide-react";
 
 import { toast } from "react-hot-toast";
@@ -22,14 +21,9 @@ const Dashboard = () => {
 
     const [files, setFiles] = useState<File[]>([]);
     const [uploading, setUploading] = useState(false);
+    const [dragging, setDragging] = useState(false);
 
-    const handleFileSelect = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const selectedFiles = Array.from(
-            event.target.files || []
-        );
-
+    const addFiles = (selectedFiles: File[]) => {
         if (selectedFiles.length === 0) {
             return;
         }
@@ -43,18 +37,83 @@ const Dashboard = () => {
         }
 
         setFiles((previousFiles) => {
-            const existingNames = new Set(
-                previousFiles.map((file) => file.name)
+            const existingFiles = new Set(
+                previousFiles.map(
+                    (file) => `${file.name}-${file.size}`
+                )
             );
 
             const newFiles = pdfFiles.filter(
-                (file) => !existingNames.has(file.name)
+                (file) =>
+                    !existingFiles.has(
+                        `${file.name}-${file.size}`
+                    )
             );
 
-            return [...previousFiles, ...newFiles];
+            const combinedFiles = [
+                ...previousFiles,
+                ...newFiles,
+            ];
+
+            if (combinedFiles.length > 10) {
+                toast.error(
+                    "You can upload up to 10 PDFs at once."
+                );
+
+                return combinedFiles.slice(0, 10);
+            }
+
+            return combinedFiles;
         });
+    };
+
+    const handleFileSelect = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const selectedFiles = Array.from(
+            event.target.files || []
+        );
+
+        addFiles(selectedFiles);
 
         event.target.value = "";
+    };
+
+    const handleDragOver = (
+        event: React.DragEvent<HTMLDivElement>
+    ) => {
+        event.preventDefault();
+        setDragging(true);
+    };
+
+    const handleDragLeave = (
+        event: React.DragEvent<HTMLDivElement>
+    ) => {
+        event.preventDefault();
+
+        if (
+            event.currentTarget.contains(
+                event.relatedTarget as Node
+            )
+        ) {
+            return;
+        }
+
+        setDragging(false);
+    };
+
+    const handleDrop = (
+        event: React.DragEvent<HTMLDivElement>
+    ) => {
+        event.preventDefault();
+
+        setDragging(false);
+
+        const droppedFiles = Array.from(
+            event.dataTransfer.files
+        );
+
+        addFiles(droppedFiles);
     };
 
     const removeFile = (fileName: string) => {
@@ -74,20 +133,17 @@ const Dashboard = () => {
         setUploading(true);
 
         try {
-            // 1. Upload documents
             const response = await uploadDocuments(files);
 
             if (!response.success) {
                 throw new Error(response.message);
             }
 
-            // 2. Get uploaded document IDs
             const documentIds =
                 response.data.documents.map(
                     (document) => document.id
                 );
 
-            // 3. Create conversation with uploaded documents
             const conversationResponse =
                 await createConversation(documentIds);
 
@@ -97,13 +153,10 @@ const Dashboard = () => {
                 );
             }
 
-            // 4. Get conversation ID
             const conversationId =
                 conversationResponse.data.conversation.id;
 
-            // 5. Navigate to chat
             navigate(`/chat/${conversationId}`);
-
         } catch (error: any) {
             toast.error(
                 error.response?.data?.message ||
@@ -116,183 +169,348 @@ const Dashboard = () => {
     };
 
     return (
-        <main className="min-h-screen bg-[#07070a] text-white">
-            {/* Background */}
-            <div className="pointer-events-none fixed inset-0 overflow-hidden">
-                <div className="absolute left-[-150px] top-[-150px] h-[500px] w-[500px] rounded-full bg-violet-600/10 blur-[130px]" />
+        <main className="relative min-h-screen overflow-hidden bg-[#07070a] text-white">
 
-                <div className="absolute bottom-[-200px] right-[-100px] h-[500px] w-[500px] rounded-full bg-indigo-600/10 blur-[130px]" />
+            {/* =====================================================
+                BACKGROUND
+            ===================================================== */}
+
+            <div className="pointer-events-none fixed inset-0">
+
+                <div className="absolute left-[-220px] top-[-220px] h-[560px] w-[560px] rounded-full bg-violet-600/[0.09] blur-[160px]" />
+
+                <div className="absolute bottom-[-240px] right-[-180px] h-[520px] w-[520px] rounded-full bg-indigo-600/[0.07] blur-[160px]" />
 
                 <div
-                    className="absolute inset-0 opacity-[0.035]"
+                    className="absolute inset-0 opacity-[0.018]"
                     style={{
                         backgroundImage:
-                            "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
-                        backgroundSize: "60px 60px",
+                            "linear-gradient(rgba(255,255,255,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.8) 1px, transparent 1px)",
+                        backgroundSize: "72px 72px",
                     }}
                 />
+
             </div>
 
-            {/* Navbar */}
-            <header className="relative z-10 border-b border-white/10 bg-[#07070a]/80 backdrop-blur-xl">
-                <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8">
-                    <div className="flex items-center gap-2">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-indigo-500 shadow-lg shadow-violet-500/20">
-                            <Sparkles className="h-4 w-4" />
+
+            {/* =====================================================
+                HEADER
+            ===================================================== */}
+
+            <header className="relative z-20 border-b border-white/[0.07] bg-[#07070a]/80 backdrop-blur-xl">
+
+                <div className="mx-auto flex h-[68px] max-w-6xl items-center justify-between px-5 sm:px-8">
+
+                    <Link
+                        to="/login"
+                        className="group flex cursor-pointer items-center gap-2.5"
+                    >
+                        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-indigo-500 shadow-lg shadow-violet-500/10 transition duration-200 group-hover:shadow-violet-500/20">
+                            <span className="text-sm font-semibold text-white">
+                                E
+                            </span>
                         </div>
 
-                        <span className="text-lg font-semibold tracking-tight">
+                        <span className="text-[16px] font-semibold tracking-[-0.02em]">
                             ExplainThisAI
                         </span>
-                    </div>
+                    </Link>
 
-                    <div className="flex items-center gap-3">
-                        <div className="hidden text-sm text-gray-400 sm:block">
-                            Document Workspace
-                        </div>
-
-                        <button className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-sm text-gray-300">
-                            P
-                        </button>
-                    </div>
                 </div>
+
             </header>
 
-            {/* Main */}
-            <section className="relative z-10 mx-auto max-w-5xl px-5 py-12 sm:px-8 lg:py-20">
-                <div className="mx-auto max-w-2xl text-center">
-                    <div className="mx-auto mb-5 flex w-fit items-center gap-2 rounded-full border border-violet-400/20 bg-violet-400/5 px-3 py-1.5 text-xs text-violet-300">
-                        <Sparkles className="h-3.5 w-3.5" />
-                        AI document workspace
-                    </div>
 
-                    <h1 className="text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">
-                        Upload your documents
-                    </h1>
+            {/* =====================================================
+                MAIN
+            ===================================================== */}
 
-                    <p className="mt-4 text-sm leading-6 text-gray-400 sm:text-base">
-                        Upload one or multiple PDFs and start asking
-                        questions about them.
-                    </p>
-                </div>
+            <section className="relative z-10 mx-auto flex min-h-[calc(100vh-68px)] max-w-6xl items-center px-5 py-10 sm:px-8">
 
-                {/* Upload area */}
-                <div
-                    onClick={() =>
-                        fileInputRef.current?.click()
-                    }
-                    className="group mx-auto mt-10 max-w-3xl cursor-pointer rounded-3xl border border-dashed border-white/15 bg-white/[0.025] p-8 transition hover:border-violet-400/40 hover:bg-violet-500/[0.03] sm:p-12"
-                >
-                    <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept="application/pdf"
-                        multiple
-                        className="hidden"
-                        onChange={handleFileSelect}
-                    />
+                <div className="w-full">
 
-                    <div className="mx-auto flex max-w-md flex-col items-center text-center">
-                        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-violet-500/10 text-violet-400 transition group-hover:scale-105 group-hover:bg-violet-500/15">
-                            <Upload className="h-7 w-7" />
-                        </div>
+                    {/* =================================================
+                        HEADING
+                    ================================================= */}
 
-                        <h2 className="mt-5 text-lg font-semibold">
-                            Drop your PDFs here
-                        </h2>
+                    <div className="mx-auto max-w-2xl text-center">
 
-                        <p className="mt-2 text-sm text-gray-500">
-                            or click to browse from your computer
+                        <h1 className="text-[36px] font-semibold tracking-[-0.05em] text-white sm:text-[46px]">
+                            Start with your documents.
+                        </h1>
+
+                        <p className="mx-auto mt-4 max-w-lg text-[14px] leading-6 text-gray-500 sm:text-[15px]">
+                            Upload one or more PDFs and start a
+                            conversation with them.
                         </p>
 
-                        <div className="mt-5 text-xs text-gray-600">
-                            PDF files · Maximum 10 MB per file · Up to 10
-                            files
-                        </div>
                     </div>
-                </div>
 
-                {/* Selected files */}
-                {files.length > 0 && (
-                    <div className="mx-auto mt-8 max-w-3xl">
-                        <div className="mb-4 flex items-center justify-between">
-                            <div>
-                                <h2 className="text-sm font-semibold">
-                                    Selected documents
+
+                    {/* =================================================
+                        WORKSPACE
+                    ================================================= */}
+
+                    <div className="mx-auto mt-9 max-w-[820px]">
+
+                        <div
+                            onClick={() =>
+                                fileInputRef.current?.click()
+                            }
+                            onDragOver={handleDragOver}
+                            onDragLeave={handleDragLeave}
+                            onDrop={handleDrop}
+                            className={`
+                                overflow-hidden rounded-2xl border
+                                bg-[#0c0c10]/90
+                                shadow-[0_24px_80px_rgba(0,0,0,0.25)]
+                                transition-all duration-200
+                                ${
+                                    dragging
+                                        ? "border-violet-400/50 shadow-[0_24px_90px_rgba(139,92,246,0.10)]"
+                                        : "border-white/[0.09] hover:border-white/[0.14]"
+                                }
+                            `}
+                        >
+
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                accept="application/pdf"
+                                multiple
+                                className="hidden"
+                                onChange={handleFileSelect}
+                            />
+
+
+                            {/* =================================================
+                                UPLOAD AREA
+                            ================================================= */}
+
+                            <div
+                                className={`
+                                    relative flex min-h-[270px]
+                                    cursor-pointer flex-col items-center
+                                    justify-center px-6 py-12
+                                    text-center
+                                    transition-colors duration-200
+                                    ${
+                                        dragging
+                                            ? "bg-violet-500/[0.035]"
+                                            : "bg-white/[0.012]"
+                                    }
+                                `}
+                            >
+
+                                {/* Small visual mark */}
+
+                                <div
+                                    className={`
+                                        flex h-14 w-14 items-center
+                                        justify-center rounded-xl
+                                        border transition-all duration-200
+                                        ${
+                                            dragging
+                                                ? "border-violet-400/30 bg-violet-500/10 text-violet-300"
+                                                : "border-white/[0.08] bg-white/[0.04] text-gray-300"
+                                        }
+                                    `}
+                                >
+                                    <Upload className="h-5 w-5" />
+                                </div>
+
+
+                                <h2 className="mt-5 text-[17px] font-medium text-gray-100">
+                                    {dragging
+                                        ? "Drop your PDFs here"
+                                        : "Upload your PDFs"}
                                 </h2>
 
-                                <p className="mt-1 text-xs text-gray-500">
-                                    {files.length} document
-                                    {files.length > 1 ? "s" : ""} selected
+
+                                <p className="mt-2 text-sm text-gray-500">
+                                    Drag and drop files here or click
+                                    to browse
                                 </p>
+
+
+                                <p className="mt-5 text-[11px] tracking-wide text-gray-600">
+                                    PDF only&nbsp;&nbsp;·&nbsp;&nbsp;
+                                    10 MB per file&nbsp;&nbsp;·&nbsp;&nbsp;
+                                    Up to 10 files
+                                </p>
+
                             </div>
 
-                            <button
-                                onClick={() => setFiles([])}
-                                className="text-xs text-gray-500 transition hover:text-white"
-                            >
-                                Clear all
-                            </button>
-                        </div>
 
-                        <div className="space-y-3">
-                            {files.map((file) => (
+                            {/* =================================================
+                                SELECTED FILES
+                            ================================================= */}
+
+                            {files.length > 0 && (
+
                                 <div
-                                    key={`${file.name}-${file.size}`}
-                                    className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4"
+                                    onClick={(event) =>
+                                        event.stopPropagation()
+                                    }
+                                    className="border-t border-white/[0.07] bg-[#0a0a0d] px-4 py-4 sm:px-5"
                                 >
-                                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-violet-500/10 text-violet-400">
-                                        <FileText className="h-5 w-5" />
+
+                                    {/* Header */}
+
+                                    <div className="mb-3 flex items-center justify-between">
+
+                                        <div className="flex items-baseline gap-2">
+
+                                            <p className="text-sm font-medium text-gray-200">
+                                                Selected files
+                                            </p>
+
+                                            <span className="text-xs text-gray-600">
+                                                {files.length}/10
+                                            </span>
+
+                                        </div>
+
+
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                setFiles([])
+                                            }
+                                            className="cursor-pointer text-xs text-gray-500 transition-colors hover:text-gray-200"
+                                        >
+                                            Clear all
+                                        </button>
+
                                     </div>
 
-                                    <div className="min-w-0 flex-1">
-                                        <p className="truncate text-sm font-medium text-gray-200">
-                                            {file.name}
-                                        </p>
 
-                                        <p className="mt-1 text-xs text-gray-500">
-                                            {formatFileSize(file.size)}
-                                        </p>
+                                    {/* File list */}
+
+                                    <div
+                                        className={`
+                                            space-y-2
+                                            ${
+                                                files.length > 4
+                                                    ? "max-h-[230px] overflow-y-auto pr-1"
+                                                    : ""
+                                            }
+                                        `}
+                                    >
+
+                                        {files.map((file) => (
+
+                                            <div
+                                                key={`${file.name}-${file.size}`}
+                                                className="group flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.025] px-3 py-3 transition-colors hover:border-white/[0.10] hover:bg-white/[0.035]"
+                                            >
+
+                                                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-violet-500/[0.08] text-violet-400">
+                                                    <FileText className="h-4 w-4" />
+                                                </div>
+
+
+                                                <div className="min-w-0 flex-1">
+
+                                                    <p className="truncate text-[13px] text-gray-200">
+                                                        {file.name}
+                                                    </p>
+
+                                                    <p className="mt-0.5 text-[11px] text-gray-600">
+                                                        {formatFileSize(
+                                                            file.size
+                                                        )}
+                                                    </p>
+
+                                                </div>
+
+
+                                                <button
+                                                    type="button"
+                                                    onClick={() =>
+                                                        removeFile(
+                                                            file.name
+                                                        )
+                                                    }
+                                                    className="cursor-pointer rounded-md p-1.5 text-gray-600 opacity-70 transition-all hover:bg-white/[0.06] hover:text-gray-300 hover:opacity-100"
+                                                    aria-label={`Remove ${file.name}`}
+                                                >
+                                                    <X className="h-4 w-4" />
+                                                </button>
+
+                                            </div>
+
+                                        ))}
+
                                     </div>
+
+
+                                    {/* Continue */}
 
                                     <button
-                                        onClick={() =>
-                                            removeFile(file.name)
-                                        }
-                                        className="rounded-lg p-2 text-gray-500 transition hover:bg-white/5 hover:text-white"
-                                        aria-label={`Remove ${file.name}`}
+                                        type="button"
+                                        onClick={handleUpload}
+                                        disabled={uploading}
+                                        className="group mt-4 flex h-11.5 w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-white text-sm font-semibold text-gray-950 transition-all duration-200 hover:bg-gray-100 active:scale-[0.995] disabled:cursor-not-allowed disabled:opacity-60"
                                     >
-                                        <X className="h-4 w-4" />
+
+                                        {uploading ? (
+                                            <>
+                                                <Loader2 className="h-4 w-4 animate-spin" />
+                                                Uploading...
+                                            </>
+                                        ) : (
+                                            <>
+                                                Continue with{" "}
+                                                {files.length}{" "}
+                                                {files.length === 1
+                                                    ? "document"
+                                                    : "documents"}
+
+                                                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+                                            </>
+                                        )}
+
                                     </button>
+
                                 </div>
-                            ))}
+
+                            )}
+
                         </div>
 
-                        <button
-                            onClick={handleUpload}
-                            disabled={uploading}
-                            className="group mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-white text-sm font-semibold text-gray-950 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
-                        >
-                            {uploading ? (
-                                <>
-                                    <Loader2 className="h-4 w-4 animate-spin" />
-                                    Uploading documents...
-                                </>
-                            ) : (
-                                <>
-                                    Upload and continue
-                                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                                </>
-                            )}
-                        </button>
+
+                        {/* =================================================
+                            BOTTOM INFO
+                        ================================================= */}
+
+                        <div className="mt-5 flex items-center justify-center gap-3 text-[11px] text-gray-600">
+
+                            <span>
+                                Multiple PDFs can be used together.
+                            </span>
+
+                            <span className="h-1 w-1 rounded-full bg-gray-700" />
+
+                            <span>
+                                Your files stay with this conversation.
+                            </span>
+
+                        </div>
+
                     </div>
-                )}
+
+                </div>
+
             </section>
+
         </main>
     );
 };
 
+
 const formatFileSize = (bytes: number) => {
+
     if (bytes < 1024) {
         return `${bytes} B`;
     }
@@ -303,5 +521,6 @@ const formatFileSize = (bytes: number) => {
 
     return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 };
+
 
 export default Dashboard;

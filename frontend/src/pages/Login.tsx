@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
-    ArrowLeft,
     ArrowRight,
     Eye,
     EyeOff,
@@ -53,59 +52,62 @@ const Login = () => {
 
     return (
         <main className="min-h-screen bg-[#07070a] text-white">
-
-            <div className="grid min-h-screen lg:grid-cols-2">
+            <div className="grid min-h-screen lg:grid-cols-[1.05fr_0.95fr]">
 
                 {/* =====================================================
-                    LEFT SIDE - BRAND / HERO
+                    LEFT SIDE
                 ===================================================== */}
 
-                <section className="relative hidden overflow-hidden lg:flex">
+                <section className="relative hidden min-h-screen overflow-hidden lg:flex">
 
                     {/* Background */}
+
                     <div className="absolute inset-0 bg-[#07070a]" />
 
-                    {/* Glow */}
-                    <div className="absolute left-[-150px] top-[-100px] h-[500px] w-[500px] rounded-full bg-violet-600/20 blur-[130px]" />
+                    {/* Ambient glow */}
 
-                    <div className="absolute bottom-[-150px] right-[-100px] h-[450px] w-[450px] rounded-full bg-indigo-600/20 blur-[130px]" />
+                    <div className="pointer-events-none absolute -left-40 -top-40 h-[520px] w-[520px] rounded-full bg-violet-600/[0.14] blur-[140px]" />
+
+                    <div className="pointer-events-none absolute -bottom-48 -right-32 h-[500px] w-[500px] rounded-full bg-indigo-600/[0.10] blur-[140px]" />
 
                     {/* Grid */}
+
                     <div
-                        className="absolute inset-0 opacity-[0.06]"
+                        className="pointer-events-none absolute inset-0 opacity-[0.045]"
                         style={{
                             backgroundImage:
-                                "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
-                            backgroundSize: "60px 60px",
+                                "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+                            backgroundSize: "64px 64px",
                         }}
                     />
 
-                    <div className="relative z-10 flex w-full flex-col justify-between p-10 xl:p-14">
+                    <div className="relative z-10 flex w-full flex-col px-10 py-9 xl:px-14 xl:py-10">
 
                         {/* Logo */}
 
                         <Link
                             to="/"
-                            className="flex w-fit items-center gap-2 text-lg font-semibold tracking-tight"
+                            className="group flex w-fit cursor-pointer items-center gap-2.5"
                         >
-                            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-indigo-500 shadow-lg shadow-violet-500/20">
-                                <Sparkles className="h-4 w-4" />
+                            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-indigo-500 shadow-lg shadow-violet-500/20 transition duration-300 group-hover:shadow-violet-500/30">
+                                <Sparkles className="h-4 w-4 text-white" />
                             </div>
 
-                            ExplainThisAI
+                            <span className="text-[16px] font-semibold tracking-[-0.02em]">
+                                ExplainThisAI
+                            </span>
                         </Link>
 
 
-                        {/* Center content */}
+                        {/* Main content */}
 
-                        <div className="max-w-lg">
+                        <div className="my-auto max-w-xl">
 
-                            <div className="mb-6 flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs text-gray-400">
-                                <Sparkles className="h-3.5 w-3.5 text-violet-400" />
-                                AI-powered document intelligence
-                            </div>
+                            <p className="mb-5 text-xs font-medium uppercase tracking-[0.18em] text-violet-400">
+                                Document conversations
+                            </p>
 
-                            <h1 className="text-5xl font-semibold leading-[1.08] tracking-[-0.04em] xl:text-6xl">
+                            <h1 className="text-5xl font-semibold leading-[1.04] tracking-[-0.055em] xl:text-6xl">
 
                                 Your documents.
 
@@ -118,33 +120,36 @@ const Login = () => {
                                 <br />
 
                                 <span className="text-gray-500">
-                                    Simple answers.
+                                    Clear answers.
                                 </span>
 
                             </h1>
 
-                            <p className="mt-7 max-w-md text-base leading-7 text-gray-400">
-                                Continue your conversations with your
-                                documents and find the information you need
-                                without searching through endless pages.
+                            <p className="mt-7 max-w-lg text-[15px] leading-7 text-gray-400">
+                                Upload your PDFs, ask questions about what
+                                matters, and keep the conversation connected
+                                to your documents.
                             </p>
 
 
-                            {/* Small features */}
+                            {/* Small product points */}
 
-                            <div className="mt-8 space-y-3">
+                            <div className="mt-8 flex flex-wrap gap-x-7 gap-y-3 text-xs text-gray-500">
 
-                                <Feature
-                                    text="Ask questions in natural language"
-                                />
+                                <div className="flex items-center gap-2">
+                                    <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
+                                    Multiple documents
+                                </div>
 
-                                <Feature
-                                    text="Keep your document conversations connected"
-                                />
+                                <div className="flex items-center gap-2">
+                                    <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
+                                    Follow-up questions
+                                </div>
 
-                                <Feature
-                                    text="Get answers based on your documents"
-                                />
+                                <div className="flex items-center gap-2">
+                                    <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
+                                    Conversation history
+                                </div>
 
                             </div>
 
@@ -162,32 +167,38 @@ const Login = () => {
 
 
                 {/* =====================================================
-                    RIGHT SIDE - LOGIN
+                    RIGHT SIDE
                 ===================================================== */}
 
-                <section className="relative flex min-h-screen items-center justify-center bg-[#fafafa] px-5 py-12 text-gray-950 sm:px-8">
+                <section className="relative flex min-h-screen items-center bg-[#fafafa] px-5 py-8 text-gray-950 sm:px-8 lg:px-12 xl:px-16">
 
                     {/* Mobile background */}
 
                     <div className="pointer-events-none absolute inset-0 overflow-hidden lg:hidden">
 
-                        <div className="absolute left-1/2 top-[-150px] h-[350px] w-[350px] -translate-x-1/2 rounded-full bg-violet-500/10 blur-[100px]" />
+                        <div className="absolute left-1/2 top-[-180px] h-[400px] w-[400px] -translate-x-1/2 rounded-full bg-violet-500/[0.08] blur-[110px]" />
 
                     </div>
 
 
-                    <div className="relative w-full max-w-md">
+                    {/* =================================================
+                        LOGIN CONTENT
 
-                        {/* Mobile logo */}
+                        Slightly moved down from exact center.
+                    ================================================= */}
 
-                        <div className="mb-10 flex items-center justify-between lg:hidden">
+                    <div className="relative mx-auto w-full max-w-[410px] translate-y-5 sm:translate-y-6 lg:translate-y-7">
+
+                        {/* Mobile header */}
+
+                        <div className="mb-9 flex items-center justify-between lg:hidden">
 
                             <Link
                                 to="/"
-                                className="flex items-center gap-2 text-lg font-semibold"
+                                className="flex cursor-pointer items-center gap-2 text-[16px] font-semibold tracking-tight"
                             >
                                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-indigo-500">
-                                    <Sparkles className="h-4 w-4 text-white" />
+                                    <Sparkles className="h-3.5 w-3.5 text-white" />
                                 </div>
 
                                 ExplainThisAI
@@ -195,42 +206,43 @@ const Login = () => {
 
                             <Link
                                 to="/"
-                                className="flex items-center gap-1 text-sm text-gray-500 transition hover:text-gray-950"
+                                className="cursor-pointer text-sm text-gray-500 transition-colors hover:text-gray-950"
                             >
-                                <ArrowLeft className="h-4 w-4" />
                                 Home
                             </Link>
 
                         </div>
 
 
-                        {/* Header */}
+                        {/* =================================================
+                            HEADER
+                        ================================================= */}
 
                         <div>
 
-                            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-100 text-violet-600">
-
-                                <Lock className="h-5 w-5" />
-
+                            <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-violet-100 text-violet-600">
+                                <Lock className="h-[18px] w-[18px]" />
                             </div>
 
-                            <h2 className="text-3xl font-semibold tracking-tight">
+                            <h2 className="text-[30px] font-semibold leading-tight tracking-[-0.035em] text-gray-950">
                                 Welcome back
                             </h2>
 
-                            <p className="mt-2 text-sm leading-6 text-gray-500">
-                                Login to continue to your ExplainThisAI
-                                workspace.
+                            <p className="mt-2 max-w-sm text-sm leading-6 text-gray-500">
+                                Sign in to continue your conversations and
+                                documents.
                             </p>
 
                         </div>
 
 
-                        {/* Form */}
+                        {/* =================================================
+                            FORM
+                        ================================================= */}
 
                         <form
                             onSubmit={handleSubmit}
-                            className="mt-8 space-y-5"
+                            className="mt-7 space-y-4"
                         >
 
                             {/* Email */}
@@ -239,7 +251,7 @@ const Login = () => {
 
                                 <label
                                     htmlFor="email"
-                                    className="mb-2 block text-sm font-medium text-gray-800"
+                                    className="mb-1.5 block text-[13px] font-medium text-gray-800"
                                 >
                                     Email address
                                 </label>
@@ -258,7 +270,7 @@ const Login = () => {
                                         placeholder="you@example.com"
                                         autoComplete="email"
                                         required
-                                        className="h-12 w-full rounded-xl border border-gray-200 bg-white pl-10 pr-4 text-sm outline-none transition placeholder:text-gray-400 hover:border-gray-300 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10"
+                                        className="h-11.5 w-full rounded-lg border border-gray-200 bg-white pl-10 pr-4 text-sm text-gray-950 outline-none transition placeholder:text-gray-400 hover:border-gray-300 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10"
                                     />
 
                                 </div>
@@ -270,16 +282,12 @@ const Login = () => {
 
                             <div>
 
-                                <div className="mb-2 flex items-center justify-between">
-
-                                    <label
-                                        htmlFor="password"
-                                        className="block text-sm font-medium text-gray-800"
-                                    >
-                                        Password
-                                    </label>
-
-                                </div>
+                                <label
+                                    htmlFor="password"
+                                    className="mb-1.5 block text-[13px] font-medium text-gray-800"
+                                >
+                                    Password
+                                </label>
 
                                 <div className="relative">
 
@@ -299,10 +307,8 @@ const Login = () => {
                                         placeholder="Enter your password"
                                         autoComplete="current-password"
                                         required
-                                        className="h-12 w-full rounded-xl border border-gray-200 bg-white pl-10 pr-12 text-sm outline-none transition placeholder:text-gray-400 hover:border-gray-300 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10"
+                                        className="h-11.5 w-full rounded-lg border border-gray-200 bg-white pl-10 pr-12 text-sm text-gray-950 outline-none transition placeholder:text-gray-400 hover:border-gray-300 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10"
                                     />
-
-                                    {/* Show / Hide password */}
 
                                     <button
                                         type="button"
@@ -311,7 +317,7 @@ const Login = () => {
                                                 (previous) => !previous
                                             )
                                         }
-                                        className="absolute right-3.5 top-1/2 -translate-y-1/2 rounded-md p-1 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer rounded-md p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700"
                                         aria-label={
                                             showPassword
                                                 ? "Hide password"
@@ -330,12 +336,12 @@ const Login = () => {
                             </div>
 
 
-                            {/* Login button */}
+                            {/* Login */}
 
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="group flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gray-950 text-sm font-semibold text-white shadow-lg shadow-gray-950/10 transition hover:-translate-y-0.5 hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
+                                className="group mt-1 flex h-11.5 w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-gray-950 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(0,0,0,0.10)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
                             >
 
                                 {loading ? (
@@ -346,7 +352,7 @@ const Login = () => {
                                 ) : (
                                     <>
                                         Login
-                                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                                        <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
                                     </>
                                 )}
 
@@ -355,65 +361,28 @@ const Login = () => {
                         </form>
 
 
-                        {/* Register */}
+                        {/* =================================================
+                            REGISTER
+                        ================================================= */}
 
-                        <p className="mt-7 text-center text-sm text-gray-500">
+                        <div className="mt-6 text-center text-sm text-gray-500">
 
                             Don't have an account?{" "}
 
                             <Link
                                 to="/register"
-                                className="font-semibold text-gray-950 transition hover:text-violet-600"
+                                className="cursor-pointer font-semibold text-gray-950 transition-colors hover:text-violet-600"
                             >
                                 Create one
-                            </Link>
-
-                        </p>
-
-
-                        {/* Footer */}
-
-                        <div className="mt-10 border-t border-gray-200 pt-6 text-center">
-
-                            <Link
-                                to="/"
-                                className="inline-flex items-center gap-1.5 text-xs text-gray-400 transition hover:text-gray-700"
-                            >
-                                <ArrowLeft className="h-3.5 w-3.5" />
-                                Back to ExplainThisAI
                             </Link>
 
                         </div>
 
                     </div>
-
                 </section>
 
             </div>
         </main>
-    );
-};
-
-
-/* =========================================================
-   FEATURE
-========================================================= */
-
-interface FeatureProps {
-    text: string;
-}
-
-const Feature = ({ text }: FeatureProps) => {
-    return (
-        <div className="flex items-center gap-3 text-sm text-gray-400">
-
-            <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-violet-500/10">
-                <div className="h-1.5 w-1.5 rounded-full bg-violet-400" />
-            </div>
-
-            {text}
-
-        </div>
     );
 };
 
