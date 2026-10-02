@@ -1,12 +1,10 @@
 import { Link } from "react-router-dom";
 import {
     ArrowRight,
-    Check,
     FileText,
     MessageCircle,
     Sparkles,
     Upload,
-    Zap,
 } from "lucide-react";
 
 const LandingPage = () => {
@@ -62,13 +60,9 @@ const LandingPage = () => {
 
             <section className="relative overflow-hidden bg-[#07070a] pt-24 text-white sm:pt-28">
 
-                {/* Ambient lighting */}
-
                 <div className="pointer-events-none absolute left-1/2 top-[-250px] h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-violet-600/[0.13] blur-[150px]" />
 
                 <div className="pointer-events-none absolute right-[-250px] top-[280px] h-[450px] w-[450px] rounded-full bg-indigo-600/[0.07] blur-[130px]" />
-
-                {/* Subtle grid */}
 
                 <div
                     className="pointer-events-none absolute inset-0 opacity-[0.045]"
@@ -81,9 +75,7 @@ const LandingPage = () => {
 
                 <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
 
-                    {/* =================================================
-                        HERO COPY
-                    ================================================= */}
+                    {/* Hero copy */}
 
                     <div className="mx-auto max-w-4xl text-center">
 
@@ -116,9 +108,6 @@ const LandingPage = () => {
                             place.
                         </p>
 
-
-                        {/* CTA */}
-
                         <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
 
                             <Link
@@ -139,13 +128,9 @@ const LandingPage = () => {
 
                         </div>
 
-                        <div className="mt-4 flex items-center justify-center gap-2 text-[11px] text-gray-600">
-
-                            <Check className="h-3 w-3 text-violet-400" />
-
+                        <p className="mt-4 text-[11px] text-gray-600">
                             Simple email & password signup
-
-                        </div>
+                        </p>
 
                     </div>
 
@@ -205,7 +190,6 @@ const LandingPage = () => {
 
                                     </div>
 
-
                                     <div className="p-4">
 
                                         <div className="mb-3 flex items-center justify-between">
@@ -217,9 +201,6 @@ const LandingPage = () => {
                                             <Upload className="h-3 w-3 text-gray-600" />
 
                                         </div>
-
-
-                                        {/* Active document */}
 
                                         <div className="rounded-lg border border-violet-500/20 bg-violet-500/[0.07] p-3">
 
@@ -247,9 +228,6 @@ const LandingPage = () => {
 
                                         </div>
 
-
-                                        {/* Second document */}
-
                                         <div className="mt-2 rounded-lg p-3 opacity-50">
 
                                             <div className="flex items-center gap-3">
@@ -276,27 +254,6 @@ const LandingPage = () => {
 
                                         </div>
 
-
-                                        <div className="mt-7 border-t border-white/[0.06] pt-5">
-
-                                            <p className="px-2 text-[9px] font-semibold uppercase tracking-[0.16em] text-gray-700">
-                                                Recent
-                                            </p>
-
-                                            <div className="mt-2 px-2 py-2">
-
-                                                <p className="truncate text-[10px] text-gray-500">
-                                                    Resume discussion
-                                                </p>
-
-                                                <p className="mt-1 text-[9px] text-gray-700">
-                                                    Today
-                                                </p>
-
-                                            </div>
-
-                                        </div>
-
                                     </div>
 
                                 </aside>
@@ -305,8 +262,6 @@ const LandingPage = () => {
                                 {/* Main chat */}
 
                                 <div className="flex min-w-0 flex-col bg-[#111114]">
-
-                                    {/* Chat header */}
 
                                     <div className="flex h-14 items-center justify-between border-b border-white/[0.07] px-5 sm:px-7">
 
@@ -329,11 +284,7 @@ const LandingPage = () => {
                                     </div>
 
 
-                                    {/* Messages */}
-
                                     <div className="flex flex-1 flex-col p-5 sm:p-8">
-
-                                        {/* User */}
 
                                         <div className="ml-auto max-w-md">
 
@@ -353,8 +304,6 @@ const LandingPage = () => {
                                         </div>
 
 
-                                        {/* Assistant */}
-
                                         <div className="mt-8 max-w-xl">
 
                                             <div className="border-l-2 border-violet-500/40 pl-4">
@@ -366,25 +315,15 @@ const LandingPage = () => {
                                                 <p className="mt-3 text-xs leading-6 text-gray-400">
                                                     I found three projects in
                                                     your document. They include
-                                                    a document-based AI
-                                                    application, a web platform,
-                                                    and an IoT project.
+                                                    a document-based application,
+                                                    a web platform, and an IoT
+                                                    project.
                                                 </p>
-
-                                            </div>
-
-                                            <div className="mt-3 flex items-center gap-1.5 text-[9px] text-gray-700">
-
-                                                <Check className="h-3 w-3" />
-
-                                                Based on Resume.pdf
 
                                             </div>
 
                                         </div>
 
-
-                                        {/* Input */}
 
                                         <div className="mt-auto pt-10">
 
@@ -423,168 +362,100 @@ const LandingPage = () => {
 
 
             {/* =========================================================
-                INTRO
+                PRODUCT STATEMENT
             ========================================================= */}
 
-            <section className="border-b border-gray-200 bg-white px-5 py-20 sm:px-8 sm:py-24 lg:px-10">
+            <section className="border-b border-gray-200 bg-white px-5 py-24 sm:px-8 sm:py-28 lg:px-10">
 
                 <div className="mx-auto max-w-7xl">
 
-                    <div className="mx-auto max-w-2xl text-center">
+                    <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+
+                        <div>
+
+                            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-violet-600">
+                                One simple workflow
+                            </p>
+
+                            <h2 className="mt-5 max-w-md text-3xl font-semibold leading-[1.1] tracking-[-0.04em] sm:text-4xl">
+                                Put the document first.
+                            </h2>
+
+                        </div>
+
+                        <div>
+
+                            <p className="max-w-2xl text-lg leading-8 tracking-[-0.015em] text-gray-500 sm:text-xl">
+                                Upload the files you need, ask your questions,
+                                and keep the conversation tied to those
+                                documents.
+                            </p>
+
+                            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3 border-t border-gray-200 pt-6">
+
+                                <span className="text-sm text-gray-500">
+                                    Multiple PDFs
+                                </span>
+
+                                <span className="text-sm text-gray-500">
+                                    Follow-up questions
+                                </span>
+
+                                <span className="text-sm text-gray-500">
+                                    Conversation history
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            {/* =========================================================
+                WORKFLOW
+            ========================================================= */}
+
+            <section className="bg-[#f7f7f8] px-5 py-24 sm:px-8 sm:py-28 lg:px-10">
+
+                <div className="mx-auto max-w-7xl">
+
+                    <div className="max-w-xl">
 
                         <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-violet-600">
-                            Work with your documents
+                            The workflow
                         </p>
 
-                        <h2 className="mt-5 text-3xl font-semibold leading-tight tracking-[-0.035em] text-gray-950 sm:text-4xl">
-                            Stop searching through pages.
-                            <br />
-                            Start asking questions.
+                        <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] sm:text-4xl">
+                            From PDF to conversation.
                         </h2>
 
-                        <p className="mx-auto mt-5 max-w-xl text-sm leading-7 text-gray-500 sm:text-base">
-                            Upload your documents and use a conversation to
-                            find, understand, and explore the information
-                            inside them.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            {/* =========================================================
-                HOW IT WORKS
-            ========================================================= */}
-
-            <section className="bg-[#f7f7f8] px-5 py-24 sm:px-8 lg:px-10">
-
-                <div className="mx-auto max-w-7xl">
-
-                    <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
-
-                        <div>
-
-                            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-violet-600">
-                                How it works
-                            </p>
-
-                            <h2 className="mt-4 text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">
-                                Simple from the start.
-                            </h2>
-
-                        </div>
-
-                        <p className="max-w-md text-sm leading-6 text-gray-500">
-                            No complicated workflow. Upload a document, ask
-                            what you want to know, and continue the
-                            conversation.
-                        </p>
-
                     </div>
 
 
-                    <div className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-gray-200 bg-gray-200 md:grid-cols-3">
+                    <div className="mt-14 grid gap-5 md:grid-cols-3">
 
-                        <Step
+                        <WorkflowCard
                             number="01"
-                            icon={<Upload className="h-4 w-4" />}
                             title="Upload"
-                            description="Add one PDF or several documents to your workspace."
+                            description="Bring in one PDF or several documents you want to work with."
                         />
 
-                        <Step
+                        <WorkflowCard
                             number="02"
-                            icon={<MessageCircle className="h-4 w-4" />}
                             title="Ask"
-                            description="Ask questions using normal language without searching manually."
+                            description="Ask questions about the information inside your documents."
                         />
 
-                        <Step
+                        <WorkflowCard
                             number="03"
-                            icon={<Zap className="h-4 w-4" />}
-                            title="Understand"
-                            description="Get clear answers and continue with follow-up questions."
+                            title="Continue"
+                            description="Keep asking follow-up questions without losing the conversation."
                         />
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            {/* =========================================================
-                FEATURES
-            ========================================================= */}
-
-            <section className="border-y border-gray-200 bg-white px-5 py-24 sm:px-8 lg:px-10">
-
-                <div className="mx-auto max-w-7xl">
-
-                    <div className="grid gap-16 lg:grid-cols-[0.75fr_1.25fr] lg:items-center">
-
-                        <div>
-
-                            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-violet-600">
-                                Everything stays connected
-                            </p>
-
-                            <h2 className="mt-5 max-w-md text-3xl font-semibold leading-tight tracking-[-0.035em] sm:text-4xl">
-                                A better way to work with information.
-                            </h2>
-
-                            <p className="mt-5 max-w-md text-sm leading-7 text-gray-500">
-                                Your documents and conversations stay
-                                connected, so you can focus on understanding
-                                the information instead of finding it.
-                            </p>
-
-                            <Link
-                                to="/register"
-                                className="group mt-7 inline-flex cursor-pointer items-center gap-2 text-sm font-semibold text-gray-950 transition-colors hover:text-violet-600"
-                            >
-                                Try ExplainThisAI
-
-                                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
-                            </Link>
-
-                        </div>
-
-
-                        <div className="grid overflow-hidden rounded-2xl border border-gray-200 sm:grid-cols-2">
-
-                            <FeatureCard
-                                className="border-b sm:border-r"
-                                icon={<MessageCircle className="h-4 w-4" />}
-                                title="Natural conversations"
-                                description="Ask questions the way you normally speak."
-                            />
-
-                            <FeatureCard
-                                className="border-b"
-                                icon={<FileText className="h-4 w-4" />}
-                                title="Multiple documents"
-                                description="Bring several PDFs into one conversation."
-                            />
-
-                            <FeatureCard
-                                className="border-b sm:border-b-0 sm:border-r"
-                                icon={<Check className="h-4 w-4" />}
-                                title="Document-based answers"
-                                description="Keep your questions connected to the selected documents."
-                            />
-
-                            <FeatureCard
-                                className=""
-                                icon={<Zap className="h-4 w-4" />}
-                                title="Follow-up questions"
-                                description="Continue the conversation without starting again."
-                            />
-
-                        </div>
 
                     </div>
 
@@ -597,7 +468,7 @@ const LandingPage = () => {
                 FINAL CTA
             ========================================================= */}
 
-            <section className="bg-[#07070a] px-5 py-24 text-white sm:px-8 lg:px-10">
+            <section className="bg-[#07070a] px-5 py-24 text-white sm:px-8 sm:py-28 lg:px-10">
 
                 <div className="relative mx-auto max-w-5xl overflow-hidden rounded-2xl border border-white/[0.08] bg-[#101014]">
 
@@ -605,16 +476,12 @@ const LandingPage = () => {
 
                     <div className="relative px-6 py-16 text-center sm:px-12 sm:py-20">
 
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-violet-400">
-                            Start with a document
-                        </p>
-
-                        <h2 className="mx-auto mt-5 max-w-2xl text-3xl font-semibold tracking-[-0.04em] sm:text-4xl">
-                            See what's inside your documents.
+                        <h2 className="mx-auto max-w-2xl text-3xl font-semibold tracking-[-0.04em] sm:text-4xl">
+                            Start with your first document.
                         </h2>
 
                         <p className="mx-auto mt-4 max-w-lg text-sm leading-6 text-gray-500">
-                            Upload your first PDF and start asking questions.
+                            Upload a PDF and start a conversation with it.
                         </p>
 
                         <Link
@@ -639,29 +506,22 @@ const LandingPage = () => {
 
             <footer className="border-t border-white/[0.08] bg-[#07070a] px-5 py-8 text-gray-500 sm:px-8 lg:px-10">
 
-                <div className="mx-auto flex max-w-7xl flex-col gap-5 text-xs sm:flex-row sm:items-center sm:justify-between">
+                <div className="mx-auto flex max-w-7xl flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
 
                     <Link
                         to="/"
                         className="flex cursor-pointer items-center gap-2 text-gray-300"
                     >
                         <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-violet-500 to-indigo-500">
-
                             <Sparkles className="h-3 w-3 text-white" />
-
                         </div>
 
-                        <span className="font-medium">
+                        <span className="text-xs font-medium">
                             ExplainThisAI
                         </span>
-
                     </Link>
 
-                    <p className="text-gray-600">
-                        Understand more. Search less.
-                    </p>
-
-                    <div className="flex items-center gap-5">
+                    <div className="flex items-center gap-5 text-xs">
 
                         <Link
                             to="/login"
@@ -689,85 +549,40 @@ const LandingPage = () => {
 
 
 /* =========================================================
-   STEP
+   WORKFLOW CARD
 ========================================================= */
 
-interface StepProps {
+interface WorkflowCardProps {
     number: string;
-    icon: React.ReactNode;
     title: string;
     description: string;
 }
 
-const Step = ({
+const WorkflowCard = ({
     number,
-    icon,
     title,
     description,
-}: StepProps) => {
+}: WorkflowCardProps) => {
     return (
-        <div className="group bg-white p-7 transition-colors duration-200 hover:bg-[#fcfcff] sm:p-8">
+        <div className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-7 transition-all duration-300 hover:-translate-y-1 hover:border-violet-200 hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] sm:p-8">
 
-            <div className="flex items-center justify-between">
+            <span className="text-[11px] font-semibold tracking-[0.2em] text-violet-500">
+                {number}
+            </span>
 
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-violet-50 text-violet-600 transition-colors duration-200 group-hover:bg-violet-600 group-hover:text-white">
-                    {icon}
-                </div>
+            <div className="mt-16">
 
-                <span className="text-[10px] font-semibold tracking-[0.2em] text-gray-300">
-                    {number}
-                </span>
+                <h3 className="text-lg font-semibold tracking-[-0.025em] text-gray-950">
+                    {title}
+                </h3>
+
+                <p className="mt-3 max-w-sm text-sm leading-6 text-gray-500">
+                    {description}
+                </p>
 
             </div>
 
-            <h3 className="mt-7 text-sm font-semibold text-gray-950">
-                {title}
-            </h3>
-
-            <p className="mt-2 max-w-sm text-sm leading-6 text-gray-500">
-                {description}
-            </p>
-
-        </div>
-    );
-};
-
-
-/* =========================================================
-   FEATURE CARD
-========================================================= */
-
-interface FeatureCardProps {
-    icon: React.ReactNode;
-    title: string;
-    description: string;
-    className?: string;
-}
-
-const FeatureCard = ({
-    icon,
-    title,
-    description,
-    className = "",
-}: FeatureCardProps) => {
-    return (
-        <div
-            className={`group p-7 transition-colors duration-200 hover:bg-[#fafaff] sm:p-8 ${className}`}
-        >
-
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100 text-violet-600 transition-colors duration-200 group-hover:bg-violet-600 group-hover:text-white">
-
-                {icon}
-
-            </div>
-
-            <h3 className="mt-5 text-sm font-semibold text-gray-950">
-                {title}
-            </h3>
-
-            <p className="mt-2 text-sm leading-6 text-gray-500">
-                {description}
-            </p>
+            <div className="pointer-events-none absolute -bottom-12 -right-12 h-32 w-32 rounded-full bg-violet-500/[0.035] blur-2xl transition-all duration-300 group-hover:bg-violet-500/[0.08]" />
 
         </div>
     );
